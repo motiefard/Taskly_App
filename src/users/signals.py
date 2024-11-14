@@ -10,7 +10,7 @@ def create_user_profile(sender, instance, created, **kwaurgs):
 
 
 @receiver(pre_save, sender=User)
-def set_username(sender, instance, created, **kwaurgs):
+def set_username(sender, instance, **kwaurgs):
     if not instance.username:
         username = f'{instance.first_name}_{instance.last_name}'.lower()
         counter = 1
