@@ -20,7 +20,9 @@ from django.urls import path, include
 
 from users import router as users_api_router
 
-aut_api_urls = []
+aut_api_urls = [
+    path(r'', include('drf_social_oauth2.urls')),
+]
 if settings.DEBUG:
     aut_api_urls.append(path(r'verify/', include('rest_framework.urls')))
 
