@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from users import router as users_api_router
+from house import router as house_api_router
 
 aut_api_urls = [
     path(r'', include('drf_social_oauth2.urls')),
@@ -28,7 +29,8 @@ if settings.DEBUG:
 
 api_url_patterns = [
     path(r'accounts/', include(users_api_router.router.urls)),
-    path(r'auth/', include(aut_api_urls))
+    path(r'auth/', include(aut_api_urls)),
+    path(r'house/', include(house_api_router.router.urls)),
 ]
 
 urlpatterns = [
