@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'social_django',
     'drf_social_oauth2',
     'house',
+    'task',
 ]
 
 MIDDLEWARE = [
