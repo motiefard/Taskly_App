@@ -30,8 +30,8 @@ class TaskList(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     completed_on = models.DateTimeField(null=True, blank=True)
     created_by = models.ForeignKey(
-        'users.Profile', on_delete=models.SET_NULL, null=True, blank=True, related_name='lists')
-    house = models.ForeignKey('house.House', on_delete=models.CASCADE, related_name='lists')
+        'users.Profile', on_delete=models.SET_NULL, null=True, blank=True, related_name='tasklists')
+    house = models.ForeignKey('house.House', on_delete=models.CASCADE, related_name='tasklists')
     name = models.CharField(max_length=120)
     description = models.TextField(null=True, blank=True)
     status = models.CharField(

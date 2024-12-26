@@ -5,7 +5,8 @@ from .permission import IsAllowedToEditTaskListElseNone, IsAllowedToEditTaskElse
 
 class TaskListViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin,
                       mixins.UpdateModelMixin, mixins.DestroyModelMixin,
-                      mixins.ListModelMixin, viewsets.GenericViewSet):
+                      #mixins.ListModelMixin, 
+                      viewsets.GenericViewSet):
     permission_classes = [IsAllowedToEditTaskListElseNone, ]
     queryset = TaskList.objects.all()
     serializer_class = TaskListSerializer
