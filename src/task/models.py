@@ -62,6 +62,8 @@ class Task(models.Model):
 
 
     def __str__(self):
+        # fields = {field.name: getattr(self, field.name) for field in self._meta.fields}
+        # print(fields)
         return f'{self.id} | {self.name}'
 
 
