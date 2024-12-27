@@ -1,5 +1,8 @@
-from rest_framework import viewsets, mixins
+from django.utils import timezone
+from rest_framework import viewsets, mixins, response, status
+from rest_framework.decorators import action
 from .models import TaskList, Task, Attachment
+from .models import COMPLETED, NOT_COMPLETE
 from .serializers import TaskListSerializer, TaskSerializer, AttachmentSerializer
 from .permission import IsAllowedToEditTaskListElseNone, IsAllowedToEditTaskElseNone, IsAllowedToEditAttachmentElseNone
 
@@ -22,6 +25,35 @@ class TaskViewSet(viewsets.ModelViewSet):
         user_profile = self.request.user.profile
         updated_queryset = queryset.filter(created_by = user_profile)
         return updated_queryset
+    
+    @action(detail=True, methods=['patch'])
+    def update_task_status(self, request, pk=None):
+        try:
+            task = self.get_object()
+            req_profile = request.user.profile
+            req_status = request.data['status']
+            if req_status == NOT_COMPLETE :
+                if task.status == COMPLETED :
+                    task.status = NOT_COMPLETE
+                    task.completed_on = None
+                    task.completed_by = None    
+                else:
+                    raise Exception("Task is already mark as not complete.")
+            elif req_status == COMPLETED :
+                if task.status == NOT_COMPLETE :
+                    task.status = COMPLETED
+                    task.completed_on = timezone.now()
+                    task.completed_bby = req_profile
+                else:
+                    raise Exception("Task is already mark as complete.")
+            else:
+                raise Exception("Incorrect status provided.")
+            task.save()
+            serilizer = TaskSerializer(instance=task, context={'request':request})
+            return response.Response(serilizer.data, status=status.HTTP_200_OK)
+
+        except Exception as err:
+            return response.Response({'detail':str(err)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AttachmentViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin,
