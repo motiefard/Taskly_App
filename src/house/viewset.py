@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -10,6 +11,8 @@ class HouseViewSet(viewsets.ModelViewSet):
     permission_classes = [IsHousemanagerOrNone, ]
     queryset = House.objects.all()
     serializer_class = HouseSerializer
+    filter_backends = [DjangoFilterBackend, ]
+    filterset_fields = ['members',]
 
     @action(detail=True, methods=['post'], name='join', permission_classes=[])
     def join(self, request, pk=None):
