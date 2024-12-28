@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, mixins, response, status
+from rest_framework import viewsets, mixins, response, status, filters
 from rest_framework.decorators import action
 from .models import TaskList, Task, Attachment
 from .models import COMPLETED, NOT_COMPLETE
@@ -20,8 +20,9 @@ class TaskViewSet(viewsets.ModelViewSet):
     permission_classes =[IsAllowedToEditTaskElseNone, ]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    filter_backends = [DjangoFilterBackend, ]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, ]
     filterset_fields = ['status', ]
+    search_fields = ['name', 'description']
     
     def get_queryset(self):
         queryset =  super(TaskViewSet, self).get_queryset()
