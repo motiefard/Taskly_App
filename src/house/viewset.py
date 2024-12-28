@@ -11,9 +11,10 @@ class HouseViewSet(viewsets.ModelViewSet):
     permission_classes = [IsHousemanagerOrNone, ]
     queryset = House.objects.all()
     serializer_class = HouseSerializer
-    filter_backends = [filters.SearchFilter, DjangoFilterBackend, ]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['members',]
     search_fields = ['name', '=description']
+    ordering_fields = ['points', 'completed_tasks_count', 'notcompleted_tasks_count']
 
     @action(detail=True, methods=['post'], name='join', permission_classes=[])
     def join(self, request, pk=None):
